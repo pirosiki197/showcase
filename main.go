@@ -12,11 +12,12 @@ import (
 
 func main() {
 	conf := mysql.Config{
-		User:   getEnvOrDefault("NS_MARIADB_USER", "root"),
-		Passwd: getEnvOrDefault("NS_MARIADB_PASSWORD", "password"),
-		Net:    "tcp",
-		Addr:   getEnvOrDefault("NS_MARIADB_HOSTNAME", "localhost") + ":" + getEnvOrDefault("NS_MARIADB_PORT", "3306"),
-		DBName: getEnvOrDefault("NS_MARIADB_DATABASE", "showcase"),
+		User:                 getEnvOrDefault("NS_MARIADB_USER", "root"),
+		Passwd:               getEnvOrDefault("NS_MARIADB_PASSWORD", "password"),
+		Net:                  "tcp",
+		Addr:                 getEnvOrDefault("NS_MARIADB_HOSTNAME", "localhost") + ":" + getEnvOrDefault("NS_MARIADB_PORT", "3306"),
+		DBName:               getEnvOrDefault("NS_MARIADB_DATABASE", "showcase"),
+		AllowNativePasswords: true,
 	}
 	db, err := sqlx.Open("mysql", conf.FormatDSN())
 	if err != nil {
