@@ -10,7 +10,7 @@ func main() {
 	e.Use(middleware.Logger())
 
 	e.GET("/hello", func(c echo.Context) error {
-		return c.String(200, "Hello, World!")
+		return c.String(200, "Hello, trap!")
 	})
 
 	e.Logger.Fatal(e.Start(":8080"))
