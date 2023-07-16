@@ -9,6 +9,9 @@ func main() {
 	e := echo.New()
 	e.Use(middleware.Logger())
 
+	e.GET("/", func(c echo.Context) error {
+		return c.String(200, "NeoShowcaseを使いたい")
+	})
 	e.GET("/hello", func(c echo.Context) error {
 		return c.String(200, "Hello, trap!")
 	})
