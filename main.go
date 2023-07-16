@@ -12,11 +12,11 @@ import (
 
 func main() {
 	conf := mysql.Config{
-		User:   os.Getenv("NS_MARIADB_USER"),
-		Passwd: os.Getenv("NS_MARIADB_PASSWORD"),
+		User:   getEnvOrDefault("NS_MARIADB_USER", "root"),
+		Passwd: getEnvOrDefault("NS_MARIADB_PASSWORD", "password"),
 		Net:    "tcp",
-		Addr:   os.Getenv("NS_MARIADB_HOSTNAME") + os.Getenv("NS_MARIADB_PORT"),
-		DBName: os.Getenv("NS_MARIADB_DATABASE"),
+		Addr:   getEnvOrDefault("NS_MARIADB_HOSTNAME", "localhost") + ":" + getEnvOrDefault("NS_MARIADB_PORT", "3306"),
+		DBName: getEnvOrDefault("NS_MARIADB_DATABASE", "showcase"),
 	}
 	db, err := sqlx.Open("mysql", conf.FormatDSN())
 	if err != nil {
@@ -37,4 +37,12 @@ func main() {
 	})
 
 	e.Logger.Fatal(e.Start(":8080"))
+}
+
+func getEnvOrDefault(key, d string) string {
+	value := os.Getenv(key)
+	if value == "" {
+		return d
+	}
+	return value
 }
