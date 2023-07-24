@@ -36,6 +36,9 @@ func main() {
 	e.GET("/hello", func(c echo.Context) error {
 		return c.String(200, "Hello, trap!")
 	})
+	e.GET("/env", func(c echo.Context) error {
+		return c.String(200, os.Getenv("EXAMPLE_ENV"))
+	})
 
 	e.Logger.Fatal(e.Start(":8080"))
 }
