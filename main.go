@@ -31,6 +31,8 @@ func main() {
 	e.Use(middleware.Logger())
 
 	e.GET("/", func(c echo.Context) error {
+		header := c.Request().Header
+		log.Println(header)
 		return c.String(200, "NeoShowcaseを使いたい")
 	})
 	e.GET("/hello", func(c echo.Context) error {
