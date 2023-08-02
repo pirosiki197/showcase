@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -32,8 +33,12 @@ func main() {
 
 	e.GET("/", func(c echo.Context) error {
 		header := c.Request().Header
-		log.Println(header)
-		return c.String(200, "NeoShowcaseを使いたい")
+		traqID, ok := header["X-Forwarded-User"]
+		if !ok {
+			return c.String(500, "something wrong")
+		}
+
+		return c.String(200, fmt.Sprintf("こんにちは、%sさん", traqID[0]))
 	})
 	e.GET("/hello", func(c echo.Context) error {
 		return c.String(200, "Hello, trap!")
