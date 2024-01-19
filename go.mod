@@ -1,6 +1,6 @@
 module github.com/pirosiki197/showcase
 
-go 1.20
+go 1.21.6
 
 require github.com/labstack/echo/v4 v4.11.0
 
