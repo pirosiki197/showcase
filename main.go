@@ -28,7 +28,7 @@ func main() {
 	e.GET("/env", func(c echo.Context) error {
 		return c.String(200, os.Getenv("EXAMPLE_ENV"))
 	})
-	e.Get("/sample", func(c echo.Context) error {
+	e.GET("/sample", func(c echo.Context) error {
 		_, err := os.Open("sample.txt")
 		if err != nil {
 			fmt.Println("sample.txt does not exist")
