@@ -36,7 +36,17 @@ func main() {
 		} else {
 			fmt.Println("sample.txt exists!")
 		}
-		return c.NoContent(204)
+		return c.NoContent(200)
+	})
+	e.GET("/ignore", func(c echo.Context) error {
+		_, err := os.Stat(".dockerignore")
+		if err != nil {
+			fmt.Println(".dockerignore does not exist")
+			fmt.Println(err)
+		} else {
+			fmt.Println(".dockerignore exists!")
+		}
+		return c.NoContent(200)
 	})
 
 	e.Logger.Fatal(e.Start(":8080"))
