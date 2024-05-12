@@ -14,7 +14,7 @@ func main() {
 
 	e.GET("/", func(c echo.Context) error {
 		header := c.Request().Header
-		traqID, ok := header["X-Forwarded-User"]
+		traqID, ok := header["X-Showcase-User"]
 		if !ok {
 			return c.String(500, "something wrong")
 		}
