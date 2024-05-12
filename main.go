@@ -14,6 +14,7 @@ func main() {
 
 	e.GET("/", func(c echo.Context) error {
 		header := c.Request().Header
+		fmt.Println(header)
 		traqID, ok := header["X-Showcase-User"]
 		if !ok {
 			return c.String(500, "something wrong")
@@ -27,6 +28,14 @@ func main() {
 	e.GET("/env", func(c echo.Context) error {
 		return c.String(200, os.Getenv("EXAMPLE_ENV"))
 	})
+	e.Get("/sample", func(c echo.Context) error {
+		_, err := os.Open("sample.txt")
+		if err != nil {
+			fmt.Println("sample.txt does not exist")
+			fmt.Println(err)
+		}
+		return c.NoContent(204)
+	}
 
 	e.Logger.Fatal(e.Start(":8080"))
 }
