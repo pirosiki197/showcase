@@ -33,6 +33,8 @@ func main() {
 		if err != nil {
 			fmt.Println("sample.txt does not exist")
 			fmt.Println(err)
+		} else {
+			fmt.Println("sample.txt exists!")
 		}
 		return c.NoContent(204)
 	})
