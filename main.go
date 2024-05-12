@@ -35,7 +35,7 @@ func main() {
 			fmt.Println(err)
 		}
 		return c.NoContent(204)
-	}
+	})
 
 	e.Logger.Fatal(e.Start(":8080"))
 }
