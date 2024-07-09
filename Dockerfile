@@ -7,5 +7,5 @@ RUN go build -o main .
 
 FROM gcr.io/distroless/static-debian12
 WORKDIR /app
-COPY --from=builder /app/main ./main
+COPY --from=builder /app/main ./
 CMD ["./main"]
