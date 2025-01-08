@@ -1,13 +1,8 @@
 package main
 
 import (
-	"context"
-	"errors"
 	"fmt"
-	"net/http"
 	"os"
-	"os/signal"
-	"syscall"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -54,16 +49,5 @@ func main() {
 		return c.NoContent(200)
 	})
 
-	go func() {
-		err := e.Start(":8080")
-		if err != nil && !errors.Is(err, http.ErrServerClosed) {
-			e.Logger.Error(err)
-		}
-	}()
-
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
-	<-quit
-	fmt.Println("Shutting down server...")
-	e.Shutdown(context.Background())
+	e.Logger.Fatal(e.Start(":8080"))
 }
