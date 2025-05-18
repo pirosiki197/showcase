@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -22,7 +23,7 @@ func main() {
 		fmt.Println(header)
 		traqID, ok := header["X-Showcase-User"]
 		if !ok {
-			return c.String(500, "something wrong")
+			return c.String(400, "X-Showcase-User header is required")
 		}
 
 		return c.String(200, fmt.Sprintf("こんにちは、%sさん", traqID[0]))
@@ -33,26 +34,12 @@ func main() {
 	e.GET("/env", func(c echo.Context) error {
 		return c.String(200, os.Getenv("EXAMPLE_ENV"))
 	})
-	e.GET("/sample", func(c echo.Context) error {
-		_, err := os.Open("sample.txt")
-		if err != nil {
-			fmt.Println("sample.txt does not exist")
-			fmt.Println(err)
-		} else {
-			fmt.Println("sample.txt exists!")
+
+	go func() {
+		for range time.Tick(10 * time.Second) {
+			fmt.Println("10 seconds passed")
 		}
-		return c.NoContent(200)
-	})
-	e.GET("/ignore", func(c echo.Context) error {
-		_, err := os.Stat(".dockerignore")
-		if err != nil {
-			fmt.Println(".dockerignore does not exist")
-			fmt.Println(err)
-		} else {
-			fmt.Println(".dockerignore exists!")
-		}
-		return c.NoContent(200)
-	})
+	}()
 
 	go func() {
 		err := e.Start(":8080")
