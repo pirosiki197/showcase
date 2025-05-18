@@ -51,7 +51,7 @@ func main() {
 			log.Println("Error encoding JSON:", err)
 			return c.String(http.StatusInternalServerError, "Internal Server Error")
 		}
-		log.Println(string(encoded))
+		fmt.Println(string(encoded))
 		return c.JSON(http.StatusOK, data)
 	})
 
