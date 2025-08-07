@@ -72,5 +72,7 @@ func main() {
 	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
 	<-quit
 	fmt.Println("Shutting down server...")
+	time.Sleep(10 * time.Second)
 	e.Shutdown(context.Background())
 }
+
