@@ -2,21 +2,36 @@ package main
 
 import (
 	"context"
+	"database/sql"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
+	"net"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
+	"github.com/go-sql-driver/mysql"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
+	conf := mysql.Config{
+		User:   os.Getenv("DB_USER"),
+		Passwd: os.Getenv("DB_PASSWORD"),
+		Net:    "tcp",
+		Addr:   net.JoinHostPort(os.Getenv("DB_HOST"), os.Getenv("DB_PORT")),
+		DBName: os.Getenv("DB_NAME"),
+	}
+	db, err := sql.Open("mysql", conf.FormatDSN())
+	if err != nil {
+		panic(err)
+	}
+
 	e := echo.New()
 	e.Use(middleware.Logger())
 
@@ -54,6 +69,25 @@ func main() {
 		fmt.Println(string(encoded))
 		return c.JSON(http.StatusOK, data)
 	})
+	e.GET("/db", func(c echo.Context) error {
+		rows, err := db.Query("SELECT name FROM users")
+		if err != nil {
+			log.Println("Error from DB:", err)
+		}
+		defer rows.Close()
+
+		var names []string
+		for rows.Next() {
+			var name string
+			rows.Scan(&name)
+			names = append(names, name)
+		}
+		if err := rows.Err(); err != nil {
+			log.Println("Error from DB:", err)
+		}
+
+		return c.JSON(http.StatusOK, names)
+	})
 
 	go func() {
 		for range time.Tick(10 * time.Second) {
@@ -75,4 +109,3 @@ func main() {
 	time.Sleep(10 * time.Second)
 	e.Shutdown(context.Background())
 }
-

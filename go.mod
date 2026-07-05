@@ -1,10 +1,14 @@
 module github.com/pirosiki197/showcase
 
-go 1.21.6
-
-require github.com/labstack/echo/v4 v4.11.0
+go 1.24.0
 
 require (
+	github.com/go-sql-driver/mysql v1.10.0
+	github.com/labstack/echo/v4 v4.11.0
+)
+
+require (
+	filippo.io/edwards25519 v1.2.0 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/labstack/gommon v0.4.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
